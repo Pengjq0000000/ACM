@@ -7,8 +7,6 @@ struct BigDecimal
 	BigDecimal() {memset(num,0,sizeof(num));len=0;d=70;}
 	friend BigDecimal operator +(BigDecimal a,BigDecimal b)
 	{
-		BigDecimal c;
-		int len=max(a.len,b.len);
 		if(a.num[0]!=b.num[0])
 		{
 			if(a.num[0]==1)
@@ -22,7 +20,9 @@ struct BigDecimal
 				return a-b;
 			}
 		}
+		BigDecimal c;
 		c.num[0]=a.num[0];
+		int len=max(a.len,b.len);
 		for(int i=1;i<=len;i++)c.num[i]=a.num[i]+b.num[i];
 		for(int i=1;i<len;i++)c.num[i+1]+=c.num[i]/10,c.num[i]%=10;
 		while(c.num[len]>9)
@@ -34,7 +34,6 @@ struct BigDecimal
 	}
 	friend BigDecimal operator -(BigDecimal a,BigDecimal b)
 	{
-		BigDecimal c;
 		if(b.num[0]==1)
 		{
 			b.num[0]=0;
@@ -45,6 +44,7 @@ struct BigDecimal
 			b.num[0]=1;
 			return a+b;
 		}
+		BigDecimal c;
 		if(a<b)
 		{
 			c=b-a;
@@ -196,6 +196,22 @@ struct BigDecimal
 	{
 		if(num[0]==1) printf("-");
 		bool sign=0;
+		if(num[d-x]>=5)
+		{
+			BigDecimal c=*this;
+			c.num[d-x]=0;
+			int tmp=d-x+1;
+			c.num[tmp]+=1;
+			while(c.num[tmp]>9)
+			{
+				c.num[tmp]=0;
+				tmp++;
+				c.num[tmp]+=1;
+				len=max(tmp,len);
+			}
+			c.print(x);
+			return;
+		}
 		for(int i=len;i>=1;i--)
 		{
 			if(i==d)
@@ -206,21 +222,18 @@ struct BigDecimal
 			if(sign)
 			{
 				x--;
-				if(!x)
-				{
-					if(num[i+1]>5) putchar(num[i]+1+'0');
-					break;
-				}
-				else putchar(num[i]+'0');
+				putchar(num[i]+'0');
+				if(!x) break;
 			}
 			else putchar(num[i]+'0');
 		}
-		putchar('\n');
+		printf("\n");
 	}
 };
-BigDecimal int_to_BigDecimal(int x)
+BigDecimal int_to_BigDecimal(long long x)
 {
 	BigDecimal c;
+	c.len=c.d;
 	if(x<0)
 	{
 		c.num[0]=1;
@@ -232,7 +245,6 @@ BigDecimal int_to_BigDecimal(int x)
 		c.num[c.len]=x%10;
 		x/=10;
 	}
-	c=c<<c.d;
 	return c;
 }
 BigDecimal string_to_BigDecimal(char *s)
@@ -240,7 +252,7 @@ BigDecimal string_to_BigDecimal(char *s)
 	BigDecimal c;
 	int len=strlen(s);
 	if(s[0]=='-') c.num[0]=1;
-	bool sign=0; 
+	bool sign=0;
 	int cnt=0;
 	for(int i=len-1;i>=0&&s[i]!='-';i--)
 	{
@@ -271,4 +283,3 @@ int main()
 	(A*111).print(20);
 	return 0;
 }
-
