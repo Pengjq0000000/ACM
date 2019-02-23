@@ -1,4 +1,3 @@
-https://vjudge.net/contest/282640
+https://vjudge.net/contest/283193#overview
 
 A B F G均是模拟
-
