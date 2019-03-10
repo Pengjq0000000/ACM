@@ -1,0 +1,23 @@
+图论https://www.cnblogs.com/SovietPower/p/9757651.html
+树链剖分https://www.cnblogs.com/chinhhh/p/7965433.html#firstt
+点分治 https://www.cnblogs.com/nietzsche-oier/p/6604245.html
+莫队 https://wenku.baidu.com/view/9d5bea335bcfa1c7aa00b52acfc789eb172d9e33.html
+Treap平衡树
+{
+	https://blog.csdn.net/the_star_is_at/article/details/54577178
+	https://www.cnblogs.com/flipped/p/6642292.html
+}
+并查集
+{
+	https://wenku.baidu.com/view/f11c8fbd551810a6f524866f.html
+	https://blog.csdn.net/tribleave/article/details/72878239
+}
+博弈SG函数 https://www.cnblogs.com/ECJTUACM-873284962/p/6921829.html
+
+
+
+
+do{}whlie (next_permutation(arr,arr+n))
+erase(unique(begin(),end()),end())
+
+Indicator sticky
