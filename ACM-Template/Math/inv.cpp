@@ -24,3 +24,26 @@ LL inv(LL i)
 
 
 
+
+
+
+// or 
+// gcd(a, p) == 1
+LL exgcd(LL a,LL b,LL &x,LL &y)
+{
+	if (b==0)
+	{
+		x=1;y=0;
+		return a;
+	}
+	LL g=exgcd(b,a%b,y,x);
+	y-=a/b*x;
+	return g;
+}
+LL inverse(LL a,LL p)
+{
+	LL inv,k,g;
+	g=exgcd(a,p,inv,k);
+	inv=MOD(MOD(inv)+p);
+	return inv;
+}
