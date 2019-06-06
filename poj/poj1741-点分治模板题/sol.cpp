@@ -11,17 +11,17 @@
 using namespace std;
 const int maxn = 1e5 + 7;
 struct node {int v, w, next;}e[maxn * 2];
-int head[maxn], n, k, tot, all;
+int head[maxn], n, k, tot;
 int num, dis[maxn], rt;
 LL ans = 0;
 void add(int u, int v, int w)
 {
-	++tot;
-	e[tot].v = v; e[tot].w = w;
-	e[tot].next = head[u];
+	e[++tot] = {v, w, head[u]};
 	head[u] = tot;
 }
 int sz[maxn], son[maxn], vis[maxn];
+
+int all; // init : all = n 
 void getroot(int u, int fa)
 {
 	sz[u] = 1; son[u] = 0;
@@ -60,22 +60,24 @@ void cal(int u, int op, int len)
 	}
     ans += op * res;
 }
-void dfs(int u)
+void DIV(int u)
 {
 	rt = 0; getroot(u, 0); u = rt;
 	vis[u] = 1;
 	cal(u, 1, 0);
+	int totsz = all;
 	for (int i = head[u]; i; i = e[i].next)
 	{
 		int v = e[i].v;
 		if (vis[v]) continue;
 		cal(v, -1, e[i].w);
-		all = sz[v]; dfs(v);
+		all = sz[v] < sz[u] ? sz[v] : totsz - sz[u];
+		DIV(v);
 	}
 }
 int main()
 {
-	while (scanf("%d%d", &n, &k) != EOF)
+	while (scanf("%d", &n) != EOF)
 	{
 		if (n == 0 && k == 0) break;
 		tot = 0; ans = 0;
@@ -85,8 +87,9 @@ int main()
 			int u, v, w; scanf("%d%d%d", &u, &v, &w);
 			add(u, v, w); add(v, u, w);
 		}
+		scanf("%d", &k);
 		all = n;
-		dfs(1);
+		DIV(1);
 		printf("%lld\n", ans);
 	}
 	return 0;
