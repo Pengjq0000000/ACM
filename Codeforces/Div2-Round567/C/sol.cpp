@@ -46,18 +46,7 @@ int main()
 				LEN[i + 1][j] = min(LEN[i + 1][j], LEN[i][j]);
 			}
 		}
-	/* 
-	for (int i = 1; i <= n; i++)
-	{
-		for (int j = 1; j <= m; j++) printf("%d ", len[i][j]);
-		puts("");
-	}
-	for (int i = 1; i <= n; i++)
-	{
-		for (int j = 1; j <= m; j++) printf("%d ", h[i][j]);
-		puts("");
-	}
-	*/
+	
 	LL ans = 0;
 	for (int i = 1; i <= n - 2; i++)
 		for (int j = 1; j <= m; j++)
@@ -77,19 +66,6 @@ int main()
 				ans += (LL)min(len[i][j], min(len[i + d][j], len[i + d + d][j]));
 			}
 		}
-	/* 
-	for (int i = n; i >= 3; i--)
-		for (int j = 1; j <= m; j++)
-		{
-			int d = H[i][j];
-			if (d > 1) continue;
-			if (i - d <= 0 || i - 2 * d <= 0) continue;
-			if (H[i - d][j] != H[i][j]) continue;
-			if (H[i - d - d][j] != H[i][j]) continue;
-			if (mp[i][j] == mp[i - d][j] || mp[i - d][j] == mp[i - d - d][j]) continue;
-			ans += (LL)min(LEN[i][j], min(LEN[i - d][j], LEN[i - d - d][j]));
-		} 
-	*/
 	printf("%lld\n", ans);
 	return 0;
 }
