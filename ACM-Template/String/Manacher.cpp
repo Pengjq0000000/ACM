@@ -23,7 +23,7 @@ int main()
 	int L = strlen(s);
 	for (int i = 0; i < L; i++)
 	{
-		a[i << 1] = -1;
+		a[i << 1] = -1; // a[i << 1] = '#';
 		a[i << 1 | 1] = s[i];
 	}
 	a[L << 1] = -1;
