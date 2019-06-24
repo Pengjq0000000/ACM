@@ -1,8 +1,13 @@
+[TOC]
+
+### String实现高精度加减
+
+```c++
 #include<bits/stdc++.h>
 #define LL long long
 #define MEM(x,y) memset(x,y,sizeof(x))
 #define MOD(x) ((x)%1000000007)
-//
+
 using namespace std;
 
 string pls(string a, string b) // a+b(a>0 && b>0)
@@ -80,3 +85,4 @@ int main()
     cout << mis(a,b) << endl;
     return 0;
 }
+```
