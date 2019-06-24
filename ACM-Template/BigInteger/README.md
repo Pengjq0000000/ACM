@@ -1,5 +1,5 @@
-- [String高精度加减](String实现高精度加减)
-- [大整数类from oy](大整数from oy)
+- [String高精度加减](#String实现高精度加减)
+- [大整数类from oy](#大整数fromoy)
 
 ### String实现高精度加减
 
@@ -88,7 +88,7 @@ int main()
 }
 ```
 
-### 大整数from oy
+### 大整数fromoy
 
 ```c++
 #include<bits/stdc++.h>
