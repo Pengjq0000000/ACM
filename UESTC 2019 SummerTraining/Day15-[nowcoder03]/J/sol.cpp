@@ -33,7 +33,7 @@ int main()
         {
             int op, val; scanf("%d %s %d", &op, s, &val);
             LL hval = get_h(s, 12);
-            //printf("hval:%lld\n", hval);
+            //printf("hval:%lld\n", hval); //
             if (op == 0)
             {
                 if (!cnt.count(hval))
