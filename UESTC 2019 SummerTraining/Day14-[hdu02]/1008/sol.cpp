@@ -108,41 +108,12 @@ int main()
             if(ss[i]<-eps){ans-=ss[i];add(i,t,Inf);add(t,i,0);}
             if(tt[i]<-eps){ans-=tt[i];add(s,i,Inf);add(i,s,0);}
         }
-//cout<<ans<<endl;
-//cout<<tt[3]<<endl;
-//for(int i=1;i<=n;++i)cout<<ss[i]<<" ";
-//cout<<endl;
-
-//for(int i=1;i<=n;++i)cout<<tt[i]<<" ";
-//cout<<endl;
         while(BFS()){
             for(int i=1;i<=n+2;++i)
                 cur[i]=last[i];
             ans-=DFS(s,Inf);
         }
         ans=(long long)(ans+0.1);
-        /*
-        ans=0;
-        for(int i=2;i<=tot;++i){
-            if(e[i].flow<eps)continue;
-            if(e[i].fr==s){
-                col[e[i].to]=1;
-            }
-            if(e[i].to==t){
-                col[e[i].fr]=2;
-            }
-        }
-        for(int i=1;i<=n;++i)cout<<col[i]<<" ";cout<<endl;
-        long long ANS=0;
-        for(int i=1;i<=m;++i){
-            if(col[u[i]]!=col[v[i]])
-                ANS+=b[i];
-            else if(col[u[i]]==1)
-                ANS+=a[i];
-            else
-                ANS+=c[i];
-        }
-*/
         printf("%lld\n",(long long )ans);
     }
 	return 0;

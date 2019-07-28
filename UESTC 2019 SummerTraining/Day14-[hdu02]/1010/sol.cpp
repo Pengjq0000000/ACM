@@ -18,5 +18,5 @@ int main()
         if (n >= 1000003) puts("0");
         else printf("%lld\n", f[n]);
     }
-	return 0;
+	return 0;//
 }
