@@ -1,4 +1,11 @@
-/// O(n)
+#include<bits/stdc++.h>
+#define LL long long
+#define MEM(x,y) memset(x,y,sizeof(x))
+#define MOD(x) ((x)%mod)
+#define mod 1000000007
+#define pb push_back
+#define STREAM_FAST ios::sync_with_stdio(false)
+using namespace std;
 const int maxn = 1e6+7;
 int vis[maxn];
 int prime[maxn], mu[maxn], minprim[maxn], tot = 0; //1 ~ tot
@@ -23,4 +30,19 @@ void get_prime(int maxl) // get prime <= maxl
         }
     }
     //vis[i] == 0 -> i is a prime
+}
+int main()
+{
+	int T; scanf("%d", &T);
+    while (T--)
+    {
+        int p, n, m; scanf("%d%d%d", &p, &n, &m);
+        if (p == 2 || p == 5) 
+        {
+            puts("0");
+            continue;
+        }
+        
+    }
+	return 0;
 }
