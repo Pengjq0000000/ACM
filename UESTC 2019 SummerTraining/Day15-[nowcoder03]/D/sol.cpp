@@ -6,43 +6,69 @@
 #define pb push_back
 #define STREAM_FAST ios::sync_with_stdio(false)
 using namespace std;
-const int maxn = 1e6+7;
-int vis[maxn];
-int prime[maxn], mu[maxn], minprim[maxn], tot = 0; //1 ~ tot
-void get_prime(int maxl) // get prime <= maxl
+LL ksm(LL a, LL b, LL pp)
 {
-    minprim[1] = 1;
-    for (int i = 2; i <= maxl; i++)
+    LL res = 1, base = a;
+    while (b)
     {
-        if (!vis[i])
-        {
-            prime[++tot] = i; minprim[i] = i;
-        }
-        for (int j = 1; j <= tot; j++)
-        {
-            if (i * prime[j] > maxl) break;
-            vis[i * prime[j]] = 1;
-            minprim[i * prime[j]] = prime[j];
-            if (i % prime[j] == 0) 
-            {
-            	break;
-            }
-        }
+        if (b & 1) res = (res * base) % pp;
+        base = (base * base) % pp;
+        b /= 2;
     }
-    //vis[i] == 0 -> i is a prime
+    return res;
 }
+int pft[20], g[20];
 int main()
 {
 	int T; scanf("%d", &T);
     while (T--)
     {
         int p, n, m; scanf("%d%d%d", &p, &n, &m);
-        if (p == 2 || p == 5) 
+        if (p == 2 || p == 5)
         {
             puts("0");
             continue;
         }
-        
+        else if (p == 3)
+        {
+            printf("%lld\n", (LL)n / 3 * m);
+            continue;
+        }
+        int x = p - 1, t = p - 1;
+        for (int d = 2; d * d <= t; d++)
+        {
+            if (t % d == 0)
+            {
+                if (ksm(10, d, p) == 1) x = min(x, d);
+                if (ksm(10, t / d, p) == 1) x = min(x, t / d);
+            }
+        }
+        int tot = 0, tmp = x;
+        for (int d = 2; d * d <= tmp; d++)
+        {
+            if (tmp % d == 0)
+            {
+                pft[++tot] = d; g[tot] = 0;
+                while (tmp % d == 0) tmp /= d, g[tot]++;
+            }
+            if (tmp == 1) break;
+        }
+        if (tmp > 1) {pft[++tot] = tmp; g[tot] = 1;}
+        //for (int i = 1; i <= tot; i++) printf("%d ", pft[i]); puts("");
+        LL ans = 0, bs;
+        for (int j = 1; j <= min(30, m); j++)
+        {
+            bs = 1;
+            for (int i = 1; i <= tot; i++)
+            {
+                int cnt = g[i] / j; if (g[i] % j) cnt++;
+                while (cnt--) bs *= pft[i];
+            }
+            ans += (LL)n / bs;
+        }
+        bs = 1; for (int i = 1; i <= tot; i++) bs *= pft[i];
+        if (m > 30) ans += (LL)(n / bs) * (m - 30);
+        printf("%lld\n", ans);
     }
 	return 0;
 }
