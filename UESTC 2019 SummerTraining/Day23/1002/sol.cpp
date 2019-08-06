@@ -10,7 +10,7 @@ const int maxn = 3e6 + 7;
 struct Trie
 {
     int tot, nxt[maxn][2], cnt[maxn], val[maxn];
-    void clear() {tot = 0;}
+    void clear() {tot = 0; MEM(nxt[0], 0); cnt[0] = 0;}
     void init(int x) {MEM(nxt[x], 0); cnt[x] = 0;}
     void insert(int *s)
     {
