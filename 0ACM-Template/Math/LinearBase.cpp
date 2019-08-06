@@ -10,7 +10,7 @@ struct LinearBase
     {
         for (int i = N_bs; i >= 0; i--)
         {
-            if (x & (1 << i)) 
+            if ((x >> i) & 1) 
                 if (!bs[i]) {bs[i] = x; break;}
                 else x ^= bs[i];
         }
@@ -20,7 +20,7 @@ struct LinearBase
     {
         for (int i = N_bs; i >= 0; i--)
         {
-            if (x & (1 << i))
+            if ((x >> i) & 1)
                 if (!bs[i]) return false;
                 else x ^= bs[i];
         }
