@@ -1,187 +1,86 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+#define LL long long
+#define MEM(x,y) memset(x,y,sizeof(x))
+#define MOD(x) ((x)%mod)
+#define mod 1000000007
+#define pb push_back
+#define pii pair<int, int>
+#define fir first
+#define sec second
+#define STREAM_FAST ios::sync_with_stdio(false)
 using namespace std;
-typedef long long ll;
-const int maxn = 2000002;
-struct ufs {
-    int rk[maxn], fa[maxn];
-    pair<int, int> stk[maxn * 2];  // 0 :rk[second]++,>0:set fa first,orginal second
-    int tp;
-    void init(int n) {
-        for (int i = 1; i <= n; i++) fa[i] = i;
-    }
-    int getf(int x) {
-        while (x != fa[x]) x = fa[x];
-        return x;
-    }
-    void mer(int x, int y) {
-        x = getf(x), y = getf(y);
-        if (x == y)
-            return;
-        if (rk[x] > rk[y])
-            swap(x, y);
-        stk[++tp] = make_pair(x, fa[x]);
-        fa[x] = y;
-        if (rk[x] == rk[y]) {
-            rk[y]++;
-            stk[++tp] = make_pair(0, y);
-        }
-    }
-    int getver() { return tp; }
-    void roolback(int p) {
-        while (tp != p) {
-            if (stk[tp].first)
-                fa[stk[tp].first] = stk[tp].second;
-            else
-                rk[stk[tp].second]--;
-            tp--;
-        }
-    }
-} s;
-struct edge {
-    int u, v;
-    bool operator<(const edge& rhs) const { return u == rhs.u ? v < rhs.v : u < rhs.u; }
-};
-struct segtree {
-    int n;
-    vector<edge> t[maxn << 2];
-    int ul, ur;
-    edge v;
-    void update(int o, int l, int r) {
-        if (ul <= l && ur >= r) {
-            t[o].push_back(v);
-            return;
-        }
-        int mid = (l + r) / 2;
-        if (ul <= mid)
-            update(o * 2, l, mid);
-        if (ur > mid)
-            update(o * 2 + 1, mid + 1, r);
-    }
-    void update(int l, int r, edge v) {
-        // printf("update %d %d %d %d\n",l,r,v.u,v.v);
-        if (l > r)
-            return;
-        ul = l, ur = r;
-        this->v = v;
-        update(1, 1, n);
-    }
-    edge q[maxn];
-    int ans[maxn];
-    void dfs(int o, int l, int r) {
-        int ver = s.getver();
-        for (int i = 0; i < t[o].size(); i++) s.mer(t[o][i].u, t[o][i].v);
-        if (l == r)
-            ans[l] = s.getf(q[l].u) == s.getf(q[l].v);
-        else {
-            int mid = (l + r) / 2;
-            dfs(o * 2, l, mid);
-            dfs(o * 2 + 1, mid + 1, r);
-        }
-        s.roolback(ver);
-    }
-    void work(int qwq) {
-        s.init(qwq);
-        dfs(1, 1, n);
-    }
-} t;
-map<edge, int> mp;
-struct query {
-    edge e;
-    int l, r;
-} q[maxn];
-
-int uu[maxn], vv[maxn], lll[maxn], rrr[maxn];
+const int maxn = 2e5 + 7;
+int n, m; 
+int f[maxn], sz[maxn], L[maxn], R[maxn];
+int fa(int x) {return x == f[x] ? f[x] : fa(f[x]);}
 vector<int>vec;
-struct node{
-    int opt, u, v;
-    node(int opt, int u, int v) : opt(opt), u(u), v(v) {}
-    node(){}
-};
-vector<node>qq[maxn];
-int getid(int x) {return lower_bound(vec.begin(), vec.end(), x) - vec.begin() + 1;}
-ll xx[maxn], yy[maxn];
-int main() {
-    //init();
-    //int nn = readint(), mm = readint();
-    int nn, mm; scanf("%d%d", &nn, &mm);
-    for (int i = 1; i <= mm; i++)
+vector<pii>q[maxn << 2];
+pii e[maxn];
+
+void update(int rt, int l, int r, int id)
+{
+    if (L[id] <= l && r < R[id])
     {
-        //uu[i] = readint(); vv[i] = readint();
-        //lll[i] = readint(); rrr[i] = readint() + 1;
-        scanf("%d%d%d%d", &uu[i], &vv[i], &lll[i], &rrr[i]);
-        rrr[i]++;
-        vec.push_back(lll[i]); vec.push_back(rrr[i]);        
+        q[rt].pb(e[id]);
+        //printf("update l=%d r=%d add %d-%d\n", l, r, e[id].fir, e[id].sec);
+        return;
+    }
+    if (l == r) return;
+    int mid = (l + r) >> 1;
+    if (L[id] <= mid) update(rt << 1, l, mid, id);
+    if (mid <  R[id]) update(rt << 1 | 1 , mid + 1, r, id);
+}
+LL ans = 0;
+void dfs(int rt, int l, int r)
+{
+    vector<pair<int*, int> >op;
+    for (pii edge : q[rt])
+    {
+        int u = fa(edge.fir), v = fa(edge.sec);
+        if (u == v) continue;
+        //printf("[l=%d, r=%d] add edge [%d-%d]", l, r, edge.fir, edge.sec);
+        if (sz[u] > sz[v]) swap(u, v);
+        op.pb({&f[u], f[u]}); f[u] = v; 
+        op.pb({&sz[v], sz[v]}); sz[v] += sz[u];
+    }
+    if (l == r)
+    {
+        if (fa(1) == fa(n)) 
+        {
+            //for (int i = 1; i <= n; i++) printf("%d ", f[i]); puts("");
+            ans += vec[l] - vec[l - 1];
+        }
+    }
+    else 
+    {
+        int mid = (l + r) >> 1;
+        dfs(rt << 1, l, mid);
+        dfs(rt << 1 | 1, mid + 1, r);
+    }
+    //rollback
+    for (auto iter = op.rbegin(); iter != op.rend(); iter++) (*iter->fir) = iter->sec;
+}
+int getid(int x) {return lower_bound(vec.begin(), vec.end(), x) - vec.begin() + 1;}
+int main()
+{
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= m; i++)
+    {
+        scanf("%d%d", &e[i].fir, &e[i].sec);
+        scanf("%d%d", &L[i], &R[i]);
+        R[i]++;
+        vec.pb(L[i]); vec.pb(R[i]);
     }
     sort(vec.begin(), vec.end());
     vec.erase(unique(vec.begin(), vec.end()), vec.end());
     int N = vec.size();
-    //printf("N:%d\n", N);
-    for (int i = 1; i <= mm; i++)
+    for (int i = 1; i <= m; i++) 
     {
-        lll[i] = getid(lll[i]); rrr[i] = getid(rrr[i]);
+        L[i] = getid(L[i]), R[i] = getid(R[i]);
+        update(1, 1, N, i);
     }
-    int tot = 0;
-    for (int i = 1; i <= mm; i++)
-    {
-        qq[lll[i]].push_back(node(0, uu[i], vv[i]));
-        qq[rrr[i]].push_back(node(1, uu[i], vv[i]));
-        tot++;
-    }
-    int n = nn, m = tot, tim = 0, cur = 0;
-    for (int i = 1; i <= N; i++) {
-        for (node x : qq[i])
-        {
-            int u = x.u, v = x.v;
-            if (u > v) swap(u, v);
-            edge e = (edge){ u, v };
-            char c = '0' + x.opt;
-            //printf("tim=%d,opt:%c %d %d\n",vec[i], c, u, v);
-            if (c == '2')
-                t.q[++tim] = e;
-            else if (c == '0')
-                mp[e] = tim;
-            else
-                q[++cur] = (query){ e, mp[e] + 1, tim }, mp[e] = -1;
-        }
-        edge e = (edge) {1, n};
-        t.q[++tim] = e;
-        if (i == N) xx[tim] = yy[tim] = 0;
-        else 
-        {
-            xx[tim] = vec[i - 1]; yy[tim] = vec[i];
-        }
-        //printf("xx=%d, yy=%d\n", xx[tim], yy[tim]);
-    }
-    // puts("WTF");
-    if (!tim)
-        return 0;
-    t.n = tim;
-    for (map<edge, int>::iterator it = mp.begin(); it != mp.end(); it++)
-        if (it->second != -1)
-            t.update(it->second + 1, tim, it->first);
-    for (int i = 1; i <= cur; i++) t.update(q[i].l, q[i].r, q[i].e);
-    // puts("WTF");
-    t.work(n);
-    ll res = 0;
-    for (int i = 1; i <= tim; i++) 
-    {
-        if (t.ans[i])
-        {
-            res += yy[i] - xx[i];
-        }
-        //puts(t.ans[i] ? "Y" : "N");
-    }
-    printf("%lld\n", res);
+    for (int i = 1; i <= n; i++) f[i] = i, sz[i] = 1;
+    dfs(1, 1, N);
+    printf("%lld\n", ans);
+	return 0;
 }
-/*
-7 9
-1 2 10 10
-2 6 10 10
-1 3 40 40
-3 6 40 40
-6 7 10 40
-1 4 30 50
-4 7 30 50
-1 5 20 20
-5 7 20 20
- */
