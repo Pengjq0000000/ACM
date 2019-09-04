@@ -60,6 +60,8 @@ namespace FFT
         for (int i = 0; i < N; i++) A[i] = A[i] * B[i];
         DFT(A, -1, N);
         for (int i = 0; i < N; i++) res[i] = (int)(A[i].x / N + 0.5);
+        for (int i = 0; i < N; i++) A[i] = B[i] = comp(0, 0);
+        //根据情况判断是否需要清空a和b
     }
 }
 // -------------------------------template end---------------------------------- //
@@ -68,7 +70,7 @@ namespace FFT
 int a[maxn], b[maxn], c[maxn];
 int main()
 {
-	Convolution(a, lena, b, lenb, c);  // c = a * b
+	Convolution(a, lena + 1, b, lenb + 1, c);  // c = a * b
 }
 
 
