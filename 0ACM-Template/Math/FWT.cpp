@@ -31,4 +31,3 @@ void ifwt(int *a, int n)
     for (int i = 0; i < n; i++) c[i] = MOD(a[i] * b[i]);
     ifwt(c, tot);
 
-

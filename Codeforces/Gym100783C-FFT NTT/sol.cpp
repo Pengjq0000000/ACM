@@ -1,4 +1,11 @@
-// -----------------------------------FFT---------------------------------------//
+#include<bits/stdc++.h>
+#define LL long long
+#define MEM(x,y) memset(x,y,sizeof(x))
+#define MOD(x) ((x)%mod)
+#define mod 1000000007
+#define pb push_back
+#define STREAM_FAST ios::sync_with_stdio(false)
+using namespace std;
 const int maxn = 1e6 + 7;
 namespace FFT
 {
@@ -62,14 +69,23 @@ namespace FFT
         for (int i = 0; i < N; i++) res[i] = (int)(A[i].x / N + 0.5);
     }
 }
-// -------------------------------template end---------------------------------- //
-
-
-int a[maxn], b[maxn], c[maxn];
+int a[maxn], b[maxn], C[maxn], can[maxn];
 int main()
 {
-	Convolution(a, lena, b, lenb, c);  // c = a * b
+	int n, mx = 0; scanf("%d", &n);
+    for (int i = 1, x; i <= n; i++)
+    {
+        scanf("%d", &x);
+        a[x] = b[x] = C[x] = 1;
+        mx = max(mx, x);
+    }
+    FFT::Convolution(a, mx, b, mx, can);
+    int m, ans = 0; scanf("%d", &m);
+    while (m--) 
+    {
+        int x; scanf("%d", &x);
+        if (can[x] || C[x]) ans++; 
+    }
+    printf("%d\n", ans);
+	return 0;
 }
-
-
-
