@@ -1,48 +1,30 @@
-/*
-mod r   k   g (mod == r * 2 ^ k + 1)
-3   1   1   2
-5   1   2   2
-17  1   4   3
-97  3   5   5
-193 3   6   5
-257 1   8   3
-7681    15  9   17
-12289   3   12  11
-40961   5   13  3
-65537   1   16  3
-786433  3   18  10
-5767169 11  19  3
-7340033 7   20  3
-23068673    11  21  3
-104857601   25  22  3
-167772161   5   25  3
-469762049   7   26  3
-1004535809  479 21  3
-2013265921  15  27  31
-2281701377  17  27  3
-3221225473  3   30  5
-75161927681 35  31  3
-77309411329 9   33  7
-206158430209    3   36  22
-2061584302081   15  37  7
-2748779069441   5   39  3
-6597069766657   3   41  5
-39582418599937  9   42  5
-79164837199873  9   43  5
-263882790666241 15  44  7
-1231453023109121    35  45  3
-1337006139375617    19  46  3
-3799912185593857    27  47  5
-4222124650659841    15  48  19
-7881299347898369    7   50  6
-31525197391593473   7   52  3
-180143985094819841  5   55  6
-1945555039024054273 27  56  5
-4179340454199820289 29  57  3
-*/
-
-// --------------------------------------------NTT---------------------------------------------- //
-
+#include<bits/stdc++.h>
+#define LL long long
+#define MEM(x,y) memset(x,y,sizeof(x))
+#define MOD(x) ((x)%mod)
+#define mod 998244353
+#define pb push_back
+#define STREAM_FAST ios::sync_with_stdio(false)
+using namespace std;
+const int maxn = 1e6 + 7;
+int phi[maxn];
+void phi_table(int n)
+{
+    for (int i = 2; i <= n; i++) phi[i] = 0;
+    phi[1] = 1;
+    for (int i = 2; i <= n; i++) if (!phi[i]) 
+        for (int j = i; j <= n; j += i)
+        {
+            if (!phi[j]) phi[j] = j;
+            phi[j] = phi[j] / i * (i - 1);
+        }
+}
+LL ksm(LL a, LL b)
+{
+    LL res = 1; 
+    while (b) {if (b & 1) res = MOD(res * a); a = MOD(a * a); b >>= 1;}
+    return res;
+}
 namespace NTT
 {
 	const int maxn = 1e6 + 7;
@@ -92,8 +74,33 @@ namespace NTT
         //根据情况判断是否要清空a和b
     }
 }
-// --------------------------------------template end------------------------------------------ //
-
-LL a[maxn], b[maxn], c[maxn];
-NTT::Convolution(a, lena + 1, b, lenb + 1, c); // c = a * b
-
+const LL sqrt2 = 116195171;
+LL cnt[maxn], A[maxn], B[maxn], res[maxn];
+int main()
+{
+    phi_table(1e5);
+	int T; scanf("%d", &T);
+    while (T--)
+    {
+        int n; scanf("%d", &n);
+        for (int i = 0; i <= n; i++) cnt[i] = 0;
+        for (int i = 1; i <= n; i++) cnt[phi[i]]++;
+        LL s = 0;
+        for (LL i = 1; i <= n; i++)
+            s = MOD(s + MOD(MOD(MOD(cnt[i] * cnt[i]) * MOD(i * i)) * ksm(2, i * i)));
+        for (LL j = 0; j <= n; j++)
+        {
+            B[j] = ksm(sqrt2, j * j);
+            A[j] = MOD(MOD(j * cnt[j]) * B[j]);
+            B[j] = ksm(B[j], mod - 2);
+        }
+        NTT::Convolution(A, n, B, n, res);
+        LL ans = 0;
+        for (int i = 1; i <= n; i++)
+            ans = MOD(ans + A[i] * res[i]);
+        ans = MOD(ans * 2 - s + mod);
+        printf("%lld\n", ans);
+        for (int i = 0; i <= n; i++) A[i] = B[i] = 0;
+    }
+	return 0;
+}

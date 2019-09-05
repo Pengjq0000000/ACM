@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 #define N (1<<18)
 typedef long long ll;
- 
+
 using namespace std;
- 
+
 ll inv(ll x, ll p) { return x == 1 ? 1 : inv(p % x, p) * (p - p / x) % p; }
- 
+
 //  a^b(mod p) = a^(b%phi(p)+(b>=phi(p)?phi(p):0))
 ll qpm(ll a, ll b, ll p) {
     ll r = 1;
@@ -13,7 +13,7 @@ ll qpm(ll a, ll b, ll p) {
     while (a = a * a % p, b >>= 1);
     return r % p;
 }
- 
+
 // Tonelli-Shanks algorithm. O(log^2(p)) 1s~5e3
 ll msqrt(ll n, ll p) {
     if (!n) return 0;
@@ -32,7 +32,7 @@ ll msqrt(ll n, ll p) {
     }
     return min(r, p - r); //    r^2=(p-r)^2=n
 }
- 
+
 //  Solve quadratic congurence equation
 //  assert(a && isprime(p));
 bool qce(ll a, ll b, ll c, ll p, ll& x1, ll& x2) {
@@ -42,21 +42,22 @@ bool qce(ll a, ll b, ll c, ll p, ll& x1, ll& x2) {
     x1 = (p - b + d) * a % p; x2 = (2 * p - b - d) * a % p;
     return true;
 }
- 
+
 int main() {
-    const ll p = 1000000007;
+    const ll p = 998244353;
     int T; cin >> T;
     while(T--) {
-        int b, c; cin >> b >> c;
+        int a, b, c; cin >> a >> b >> c;
         ll x1 = -1, x2 = -1;
         ll x = -1, y = -1;
-        if (qce(1, (p - b) % p, c, p, x1, x2)) {
+        if (qce(a, b, c, p, x1, x2)) {
             x = x1;
             y = (p + b - x) % p;
             if (x > y) swap(x, y);
         }
         cout << x << ' ' << y << endl;
     }
- 
+
     return 0;
 }
+
