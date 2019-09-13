@@ -48,7 +48,7 @@ int treequery(int x, int y)
     if (dep[x] > dep[y]) swap(x, y);
     ///////////////////////////////////////////////////
     if (x == y) return res;
-    res = max(res, query(1, 1, n, id[son[x]], id[y])); // 点权下放 id[son[x]], id[y]
+    res = max(res, query(1, 1, n, id[son[x]], id[y])); // 边权下放 id[son[x]], id[y]
     ///////////////////////////////////////////////////
     
     // 若未下放点权直接 id[x], id[y] 即可
