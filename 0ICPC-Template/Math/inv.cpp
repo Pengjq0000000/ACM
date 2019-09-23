@@ -25,8 +25,6 @@ LL inv(LL i)
 
 
 
-
-
 // or 
 // gcd(a, p) == 1
 LL exgcd(LL a,LL b,LL &x,LL &y)

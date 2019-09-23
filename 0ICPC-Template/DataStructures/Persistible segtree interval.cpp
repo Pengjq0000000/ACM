@@ -1,5 +1,3 @@
-
-
 struct node {int l, r; LL sum, tg;}T[maxn * 65];
 int tot = 0, root[maxn];
 void update(int &rt, int pre, int l, int r, int L, int R, int val)
@@ -20,4 +18,5 @@ LL query(int rt, int pre, int l, int r, int L, int R, LL add)
     if (mid <  R) res += query(T[rt].r, T[pre].r, mid + 1, r, max(L, mid + 1), R, add);
     return res;
 }
+
 

@@ -1,4 +1,3 @@
-
 vector<int>E[maxn], scc[maxn], G[maxn];
 int dfn[maxn], low[maxn], stk[maxn], vis[maxn];
 int color[maxn];

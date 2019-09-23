@@ -1,18 +1,26 @@
 #include<bits/stdc++.h>
 using namespace std;
+long long aa;bool bb;char ch;
+long long scan()
+{
+	while(ch=getchar(),(ch<'0'||ch>'9')&&ch!='-');
+	ch=='-'?(bb=1,aa=0):(bb=0,aa=ch-48);
+	while(ch=getchar(),(ch>='0'&&ch<='9'))
+		aa=aa*10+ch-48;
+	return (bb?(-aa):(aa));
+}
 const int maxn = 2e5 + 7;
-struct node{int l, r, sum;}T[maxn * 400];
+struct node{int l, r, sum;}T[maxn * 200];
 int cnt = 0, rt[maxn];
 void update(int &rt, int pre, int l, int r, int pos, int val)
 {
-    if (!rt) T[rt = ++cnt] = T[pre];
+    if (!rt) rt = ++cnt;
     T[rt].sum += val;
     if (l == r) return;
     int mid = (l + r) >> 1;
     if (pos <= mid) update(T[rt].l, T[pre].l, l, mid, pos, val);
     else update(T[rt].r, T[pre].r, mid + 1, r, pos, val);
 }
-int lc, rc, lp[20], rp[20];
 int query(int rt, int l, int r, int L, int R)
 {
     if (L <= l && r <= R) return T[rt].sum;
@@ -30,10 +38,10 @@ inline void add(int x, int val)
 }
 int main()
 {
-    scanf("%d%d", &n, &q);
+    n = scan(); q = scan();
     for (int i = 1; i <= n; i++)
     {
-        scanf("%d", &a[i]);
+        a[i] = scan();
         if (a[i] != a[i - 1]) b[i] = a[i];
     }
     for (int i = 1; i <= n; i++) if (b[i]) add(i, 1);
@@ -41,7 +49,7 @@ int main()
     while (q--)
     {
         int op, l, r, x, y;
-        scanf("%d%d%d", &op, &l, &r);
+        op = scan(); l = scan(); r = scan();
         if (op == 1)
         {
             if (a[l] == r) continue;
@@ -53,7 +61,7 @@ int main()
         }
         else
         {
-            scanf("%d%d", &x, &y);
+            x = scan(); y = scan();
             int ans = 0;
             for (int p = l - 1; p; p -= lowbit(p)) ans -= query(rt[p], 1, n, x, y);
             for (int p = r; p; p -= lowbit(p)) ans += query(rt[p], 1, n, x, y);

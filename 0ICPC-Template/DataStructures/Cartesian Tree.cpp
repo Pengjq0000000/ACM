@@ -1,6 +1,4 @@
-/* ----------------------------------------------------------------------------*/
 //笛卡尔树 : 具有堆性质，且中序遍历是原序列
-
 int a[maxn];// elements for the Tree
 int l[maxn], r[maxn], vis[maxn];
 int stk[maxn];//stack
@@ -21,5 +19,3 @@ int build() // return the root of Cartesian Tree
     for (int i = 1; i <= n; i++) vis[l[i]] = vis[r[i]] = 1;
     for (int i = 1; i <= n; i++) if (!vis[i]) return i; //return the root
 }
-
-/* ----------------------------------------------------------------------------*/

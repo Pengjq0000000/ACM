@@ -1,11 +1,14 @@
 
 // logn
-vector<LL> solve(LL n) {
+vector<LL> solve(LL n) 
+{
     vector<LL> res(10, 0);
     if(!n) return res;
-    if(n % 10 < 9) {
+    if(n % 10 < 9) 
+    {
         res = solve(n - 1);
-        while(n) {
+        while(n) 
+        {
             res[n % 10]++;
             n /= 10;
         }
