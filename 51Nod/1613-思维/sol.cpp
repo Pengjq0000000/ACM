@@ -12,10 +12,9 @@ pii cal(int x)
     if (l > r) swap(l, r);
     return make_pair(l, r); 
 }
-int main()
+void solve1()
 {
-    scanf("%d%d", &n, &k);
-    if ((n & 1) && !(k & 1)) {puts("-1"); return 0;}
+    if ((n & 1) && !(k & 1)) {puts("-1"); return;}
     pii now = make_pair(0, 0);
     int f = n % k, ans = 0;
     while (1)
@@ -30,7 +29,7 @@ int main()
                     ans += (n - x) / k;
                     flag = 1;
                     break;
-                }
+                }  
             }   
             if (flag) break;
         }
@@ -41,5 +40,28 @@ int main()
         ans++;
     }
     printf("%d\n", ans);
+}
+
+void solve2()
+{
+    int t = n / k, r = n % k;
+    if (!r) {printf("%d\n", t); return;}
+    if ((r & 1) && !(k & 1)) {puts("-1"); return;}
+    if (t > 1)
+    {
+        if ((r & 1) == (k & 1)) printf("%d\n", t + 1);
+        else if (!(r & 1) && (k & 1)) printf("%d\n", t + 2);
+    }
+    else if (t == 1) 
+    {
+        if (!(r & 1)) puts("3");
+        else if ((r & 1) && (k & 1)) printf("%d\n", 2 * (n / 2 / r + (n % (2 * r) > 0)));
+    }
+}
+int main()
+{
+    scanf("%d%d", &n, &k);
+    //solve1();
+    solve2();
     return 0;
 }
