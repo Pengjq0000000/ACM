@@ -76,5 +76,5 @@ int main()
         printf("%d ", res ^ A);
     }
     puts("");
-    return 0;
+    return 0;//
 }
