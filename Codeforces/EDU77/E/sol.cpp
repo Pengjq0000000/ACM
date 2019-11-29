@@ -15,5 +15,5 @@ int main() {
         int x = q.top().second;
         ans += a[x], q.pop();
     }
-    cout << ans << endl;
+    cout << ans << endl;//
 }

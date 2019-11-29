@@ -18,7 +18,7 @@ int main()
     else 
     {
         puts("YES");
-        int now = V % k, aimx = 0, aimy = 0;
+        int now = V % k, aimx = 0, aimy = 0;//
         for (int i = n; i; --i) if (dp[i - 1][sub(now, b[i])]) 
         {
             key[i] = 1; aimx = i;

@@ -28,7 +28,7 @@ bool check(int x)
         }
         s.insert(temp);
     }
-    int sum = 0;
+    int sum = 0;//
     for (line temp : s) sum += temp.r - temp.l + 1;
     return sum * 2 + n + 1 <= t;
 }
